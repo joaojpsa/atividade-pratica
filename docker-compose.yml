@@ -1,20 +1,22 @@
 services:
-
+#mapeia porta, depencia do DB, restar se falhar.
   frontend:
     build: ./frontend
     ports:
       - "80:80"
     depends_on:
       - db
+    restart: always
     networks:
       - idade-network
-
+#define as variaveis que o conteiner utilizará, depende do BD
   backend:
     build: ./backend
     environment:
       DB_HOST: db
       DB_USER: user
       DB_NAME: idade
+    restart: always
     secrets:
       - mysql_root_password
       - mysql_password
@@ -22,7 +24,7 @@ services:
       - db
     networks:
       - idade-network
-
+#variaveis de ambiente do banco de dados
   db:
     image: mysql:8.0
     environment:
@@ -33,17 +35,20 @@ services:
     secrets:
       - mysql_root_password
       - mysql_password
+    ports:
+      - "3306:3306"
+    restart: always
     volumes:
       - db-data-idade:/var/lib/mysql
     networks:
       - idade-network
-
+#volume persistente, armazena dados do BD mysql
 volumes:
   db-data-idade:
-
+#define uma rede para os conteineres se comunicarem
 networks:
   idade-network:
-
+#senha do mysql
 secrets:
   mysql_root_password:
     file: ./secrets/mysql_root_password.txt

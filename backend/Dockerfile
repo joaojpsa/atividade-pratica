@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 
-#copia o script wai-for-it.sh e   especificar permissão para execução
+#copia o script wai-for-it.sh e especificar permissão para execução
 COPY wait-for-it.sh /app/wait-for-it.sh
 RUN chmod +x /app/wait-for-it.sh
 
