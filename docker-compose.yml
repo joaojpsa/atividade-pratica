@@ -1,21 +1,25 @@
 services:
-  backend:
-    build: ./backend
-    environment:
-      DB_HOST: db
-      DB_USER: user
-      DB_NAME: idade
-    depends_on:
-      - db
-    networks:
-      - idade-network
 
   frontend:
     build: ./frontend
     ports:
       - "80:80"
     depends_on:
-      - backend
+      - db
+    networks:
+      - idade-network
+
+  backend:
+    build: ./backend
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_NAME: idade
+    secrets:
+      - mysql_root_password
+      - mysql_password
+    depends_on:
+      - db
     networks:
       - idade-network
 

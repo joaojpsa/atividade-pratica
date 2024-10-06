@@ -11,8 +11,8 @@ COPY . .
 
 
 #copia o script wai-for-it.sh e   especificar permissão para execução
-COPY wai-for-it.sh /wai-for-it.sh
-RUN chmod +x /wai-for-it.sh
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
 
 #expor a porta 5000
 EXPOSE 5000
