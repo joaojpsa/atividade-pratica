@@ -1,0 +1,47 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_NAME: idade
+    depends_on:
+      - db
+    networks:
+      - idade-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - idade-network
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: idade
+      MYSQL_USER: user
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    secrets:
+      - mysql_root_password
+      - mysql_password
+    volumes:
+      - db-data-idade:/var/lib/mysql
+    networks:
+      - idade-network
+
+volumes:
+  db-data-idade:
+
+networks:
+  idade-network:
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
